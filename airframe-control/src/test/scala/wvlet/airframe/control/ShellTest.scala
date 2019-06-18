@@ -65,6 +65,7 @@ class ShellTest extends AirframeSpec {
       val p        = Shell.launchProcess("cat")
       val pid      = Shell.getProcessID(p)
       val exitCode = Shell.kill(pid)
+      exitCode should be (0)
     }
 
     "be able to kill process trees" in {
@@ -79,8 +80,11 @@ class ShellTest extends AirframeSpec {
     }
 
     "launch command" in {
-      Shell.launchProcess("echo hello world")
-      Shell.launchProcess("echo cygwin env=$CYGWIN")
+      val p1 = Shell.launchProcess("echo hello world")
+      val p2 = Shell.launchProcess("echo cygwin env=$CYGWIN")
+
+      p1.waitFor() should be (0)
+      p2.waitFor() should be (0)
     }
 
     "launch process" taggedAs ("launch_process") in {

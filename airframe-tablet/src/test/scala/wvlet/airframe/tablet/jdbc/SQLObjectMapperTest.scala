@@ -59,6 +59,8 @@ class SQLObjectMapperTest extends AirframeSpec {
         }
         val s = b.result
         debug(b.result)
+        s.size shouldBe 1
+        s.head shouldBe r
       }
     }
 
