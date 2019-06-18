@@ -52,7 +52,15 @@ trait JMXRegistry extends JMXMBeanServerService with LogSupport {
   }
 
   def unregister(name: String): Unit = {
-    mbeanServer.unregisterMBean(new ObjectName(name))
+    synchronized {
+      val objectName = new ObjectName(name)
+      Try(mbeanServer.unregisterMBean(objectName)) match {
+        case Failure(e) =>
+          error(e.getMessage, e)
+        case _ =>
+          registeredMBean -= objectName
+      }
+    }
   }
 
   def unregisterAll: Unit = {
@@ -62,6 +70,7 @@ trait JMXRegistry extends JMXMBeanServerService with LogSupport {
           case Failure(e) =>
             error(e.getMessage, e)
           case _ =>
+            registeredMBean -= name
         }
       }
     }

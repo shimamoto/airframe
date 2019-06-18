@@ -13,6 +13,7 @@
  */
 package wvlet.airframe.jmx
 
+import javax.management.ObjectName
 import wvlet.airframe.AirframeSpec
 import wvlet.log.LogSupport
 
@@ -99,6 +100,19 @@ class JMXRegistryTest extends AirframeSpec {
 
     "support complex trait name" in {
       agent.register[MyJMXApp](new MyJMXApp {})
+    }
+
+    "unregister an mbean" in {
+      val b = new SampleMBean
+      agent.register(b)
+
+      if (!JMXUtil.isAtLeastJava9) {
+        agent.unregister("wvlet.airframe.jmx:name=SampleMBean")
+
+        agent.withConnector { connector =>
+          connector.getMBeanServerConnection.isRegistered(new ObjectName("wvlet.airframe.jmx:name=SampleMBean")) shouldBe false
+        }
+      }
     }
 
   }
