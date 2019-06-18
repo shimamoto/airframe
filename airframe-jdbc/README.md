@@ -1,7 +1,7 @@
 airframe-jdbc
 ====
 
-airframe-jdbc is a reusable JDBC connection pool implementation with Airframe. 
+airframe-jdbc is a reusable JDBC connection pool implementation with Airframe.
 
 Currently we are supporting these databases:
 
@@ -25,7 +25,7 @@ libraryDependencies += "org.wvlet.airframe" %% "airframe-jdbc" % "(version)"
 import wvlet.airframe._
 import wvlet.airframe.jdbc._
 
-// Import ConnectionPoolFactoryService 
+// Import ConnectionPoolFactoryService
 trait MyDbTest extends ConnectionPoolFactoryService {
   // Create a new connection pool. The created pool will be closed automatically
   // after the Airframe session is terminated.
@@ -39,7 +39,7 @@ trait MyDbTest extends ConnectionPoolFactoryService {
     ps.setString(2, "name")  
   }
   // Read ResultSet
-  connectionPoo.executeQuery("select * from test") { rs =>
+  connectionPool.executeQuery("select * from test") { rs =>
     // Traverse the query ResultSet here
     while (rs.next()) {
       val id   = rs.getInt("id")
@@ -59,7 +59,7 @@ val d = newDesign
 
 d.withSession { session =>
    val t = session.build[MyDbTest]
-   
+
    // You can make queries using the connection pool
    t.connectionPool.executeQuery("select ...")
 }
@@ -109,7 +109,7 @@ import wvlet.airframe.jdbc._
 
 object MultipleConnection {
   type MyDb1Config = DbConfig
-  type MyDb2Config = DbConfig 
+  type MyDb2Config = DbConfig
 }
 
 import MultipleConnection._
@@ -124,4 +124,4 @@ val d = newDesign
   .bind[MyDb1Config].toInstance(DbConfig.ofSQLite(path="mydb.sqlite"))
   .bind[MyDb2Config].toInstance(DbConfig.ofPostgreSQL(database="mydatabase"))
 
-``` 
+```

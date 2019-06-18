@@ -97,12 +97,12 @@ Airframe can integrate the flexibility of Scala traits and dependency injection 
 
 In Airframe, you can use two types of dependency injections: __constructor injection__ or
 __in-trait injection__:
- 
+
 ![image](https://wvlet.org/airframe/img/airframe/injection-types.png)
- 
+
 ### Constructor Injection
 Constructor injection is the most natural form of injection.
-When `design.build[A]` is called, Airframe will find the primary constructor of `A` and 
+When `design.build[A]` is called, Airframe will find the primary constructor of `A` and
 its arguments, then creates a new instance of `A` by finding dependencies from a _Design_.
 
 ```scala
@@ -256,7 +256,7 @@ newDesign.build[A] { x => ... } // -> x will be C
 
 Design supports `+` (add) operator to combine multiple designs at ease:
 ```scala
-val newDesign = d1 + d2 // d2 will override the bindings in d1 
+val newDesign = d1 + d2 // d2 will override the bindings in d1
 ```
 `+` operator is not commutative because of this override, so `d1 + d2` and `d2 + d1` will be different designs if there are some overlaps.
 
@@ -303,17 +303,17 @@ Server side application often requires resource management (e.g., network connec
 trait MyServerService {
   val service = bind[Server]
     .onInit( _.init )   // Called when the object is initialized
-    .onInject(_.inject) // Called when the object is injected 
+    .onInject(_.inject) // Called when the object is injected
     .onStart(_.start)   // Called when session.start is called
     .beforeShutdown( _.notify) // Called right before all shutdown hook is called
-                               // Useful for adding pre-shutdown step 
+                               // Useful for adding pre-shutdown step
     .onShutdown( _.stop ) // Called when session.shutdown is called
   )
 }
 
 trait Server {
   def init = ...
-  def inject = ... 
+  def inject = ...
   def start = ...
   def notify = ...
   def stop = ...
@@ -323,11 +323,11 @@ These life cycle hooks except `onInject` will be called only once when the bindi
 
 ### Eager Initialization of Singletons for Production
 
-In production, initializing singletons (by calling onStart) is preferred. To use production mode, 
+In production, initializing singletons (by calling onStart) is preferred. To use production mode,
 use `Design.withProductionMode`:
 
 ```scala
-// All singletons defined in the design will be initialized (i.e., onInit/onInject/onStart hooks will be called) 
+// All singletons defined in the design will be initialized (i.e., onInit/onInject/onStart hooks will be called)
 design
   .withProductionMode
   .build[X]{ x =>
@@ -359,15 +359,15 @@ trait MyService {
   def init {
     // Called when the object is initialized. The same behavior with onInit
   }
-  
-  @PreDestroy 
+
+  @PreDestroy
   def stop {
-    // Called when session.shutdown is called. The same with onShutdown. 
+    // Called when session.shutdown is called. The same with onShutdown.
   }
 }
 ```
 
-These annotation are not supported in Scala.js, because it has no run-time reflection to read annotations in a class. 
+These annotation are not supported in Scala.js, because it has no run-time reflection to read annotations in a class.
 
 ### Finding The Current Session
 
@@ -398,7 +398,7 @@ trait MyApp {
 
 ### Child Sessions
 
-If you need to override a part of the design in a short term, you can use _child sessions_. Child sessions are useful for managing request-scoped sessions (e.g., HTTP requests, database query contexts, etc.). 
+If you need to override a part of the design in a short term, you can use _child sessions_. Child sessions are useful for managing request-scoped sessions (e.g., HTTP requests, database query contexts, etc.).
 
 ___Usage Example___
 
@@ -441,16 +441,16 @@ For example, if `X` is already started (onStart is called) in the parent session
 
 ## Designing Applications with Airframe
 
-When writing an application, these concerns below are often unrelated to the core applcation logic:
+When writing an application, these concerns below are often unrelated to the core application logic:
 - How to build service objects.
 - How to configure services.
 - How to manage life cycle of service objects.
 
-Airframe allows separating these concerns into `Design`. For example, when writing service A and B in the following figure, you should be able to focus only direct dependencies. In this example DBClient and FluentdLogger are the direct dependencies of A and B. 
+Airframe allows separating these concerns into `Design`. For example, when writing service A and B in the following figure, you should be able to focus only direct dependencies. In this example DBClient and FluentdLogger are the direct dependencies of A and B.
 
 ![image](https://wvlet.org/airframe/img/airframe/build-service-objects.png)
 
-When building objects A and B, we usually need to think about the other indirect dependencies like ConnectionPool, HttpClient, DB, etc. By injecting dependencies using `bind[X]` syntax (left), we can effectively forget about there indirect dependencies (right): 
+When building objects A and B, we usually need to think about the other indirect dependencies like ConnectionPool, HttpClient, DB, etc. By injecting dependencies using `bind[X]` syntax (left), we can effectively forget about there indirect dependencies (right):
 
 ![image](https://wvlet.org/airframe/img/airframe/code-example.png)
 

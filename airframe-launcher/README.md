@@ -1,7 +1,7 @@
 airframe-launcher
 ===
 
-*airframe-laucnher* is a handy command-line program launcher. 
+*airframe-launcher* is a handy command-line program launcher. 
 
 ## Usage
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.wvlet.airframe/airframe-launcher_2.12/badge.svg)](http://central.maven.org/maven2/org/wvlet/airframe/airframe-launcher_2.12/)
@@ -16,14 +16,14 @@ libraryDependencies += "org.wvlet.airframe" %% "airframe-launcher" % "(version)"
 
 1. Import `wvlet.airframe.launcher._`
 1. Create a class `A` with constructor arguments annotated with `@option` or `@argument`
-1. Call `Launcher.of[A].execute("command line")` 
+1. Call `Launcher.of[A].execute("command line")`
 
 ```scala
 import wvlet.airframe.launcher._
 
-class MyApp(@option(prefix = "-h,--help", description = "display help messages", isHelp = true) 
+class MyApp(@option(prefix = "-h,--help", description = "display help messages", isHelp = true)
             help: Boolean = false,
-            @option(prefix = "-p", description = "port number") 
+            @option(prefix = "-p", description = "port number")
             port: Int = 8080) {
 
    @command(isDefault = true)
@@ -61,7 +61,7 @@ usage: myapp [options]
 
 ### Available Annotations
 
-- `@option` options 
+- `@option` options
   - You can specify multiple option prefixes (e.g., `-h,--help`) for the same option
 - `@argument`
   - For mapping non-option arguments. If you want to handle multiple arguments, use `Seq[String]`, `Array[String]` types.
@@ -80,9 +80,9 @@ import wvlet.log.LogSupport
 
 // Define a global option
 case class GlobalOption(
-  @option(prefix = "-h,--help", description = "display help messages", isHelp = true) 
+  @option(prefix = "-h,--help", description = "display help messages", isHelp = true)
   help: Boolean = false,
-  @option(prefix = "-l,--loglevel", description = "log level") 
+  @option(prefix = "-l,--loglevel", description = "log level")
   loglevel: Option[LogLevel] = None
 )
 
@@ -103,7 +103,7 @@ class MyApp(g:GlobalOption) extends LogSupport {
   def world(@argument message: String) {
     println(s"world ${message}")
   }
-  
+
   @command(description = "start a server")
   def start(
     @option(prefix="-p,--port", description = "port number")
@@ -164,24 +164,24 @@ If you use [sbt-pack](https://github.com/xerial/sbt-pack) plugin, you can create
 ```scala
 enablePlugins(PackPlugin)
 
-// This example creates `myapp` command (target/pack/bin/hello) that calls org.mydomain.MyApp#main(Array[String]) 
+// This example creates `myapp` command (target/pack/bin/hello) that calls org.mydomain.MyApp#main(Array[String])
 packMain := Map("myapp" -> "org.mydomain.MyApp")
 ```
 
 
-### Run the program 
+### Run the program
 ```sh
 $ sbt pack
 ...
 
-$ ./target/pack/bin/myapp 
+$ ./target/pack/bin/myapp
 Type --help to display the list of commands
 $ ./target/pack/bin/myapp --help
 usage: [options] <command name>
 
 [options]
  -h, --help                 display help messages
- -l, --loglevel=[LOGLEVEL]  log level 
+ -l, --loglevel=[LOGLEVEL]  log level
 [commands]
  hello      say hello
  world     	say world

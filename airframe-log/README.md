@@ -27,12 +27,12 @@ libraryDependencies += "org.wvlet.airframe" %%% "airframe-log" % "(version)"
 - **Simple to use**
   - You can start logging by adding `wvlet.log.LogSupport` trait to your code. No need to write `Logger.getLogger(xxx)` anymore.
 - **Fast and light-weight**
-  - airframe-log uses Scala macros for efficiency; log messages will be instantiated only when the log level is effective. 
+  - airframe-log uses Scala macros for efficiency; log messages will be instantiated only when the log level is effective.
   - airframe-log is just an extension of JVM's built-in `java.util.logging`. So no need exists to add custom binding jars, such as logback-classic as in slf4j.
 - **Informative**
   - ANSI colored logging support.
   - You can also show the **source code locations** (line number and pos) of log messages.
-- **Fully customizable** 
+- **Fully customizable**
   - log levels can be changed at ease with the periodic log-level scanner.
   - You can also change the log level through the standard JMX interface for `java.util.logging`.  
   - Easy to customize your own log format and log levels *inside* the code. No external XML configuration is required.
@@ -43,7 +43,7 @@ libraryDependencies += "org.wvlet.airframe" %%% "airframe-log" % "(version)"
 ## Resources
 - GitHub: [airframe-log](https://github.com/wvlet/airframe/tree/master/airframe-log)
 - Blog post: [Airframe Log: A Modern Logging Library for Scala](https://medium.com/@taroleo/airframe-log-a-modern-logging-library-for-scala-56fbc2f950bc)
- 
+
 
 ### Using LogSupport trait
 
@@ -72,7 +72,7 @@ class YourApp {
 
 ### Using the default configuration
 
-If your project involves dependencies that set their own java.util.logging configurations, 
+If your project involves dependencies that set their own java.util.logging configurations,
 you can force using the default configuration of Airframe Log by calling `wvlet.airframe.log.init`:
 
 ```scala
@@ -111,15 +111,15 @@ The format follows [Java Properties file format](https://docs.oracle.com/javase/
 
 In default, loglevel file will be found in this order:  
 
- 1. `log-test.properties` in the classpath. 
+ 1. `log-test.properties` in the classpath.
  1. If 1. is not found, use `log.properties` in the classpath.
 
 To change the log file path, you can use `Logger.scheduleLogLevelScan(file paths, duration)`.
 
 In debugging your application, create `src/test/resources/log-test.properties` file, and
-call `Logger.scheduleLogLevelScan` before running test cases. This is useful for quickly checking the log messages. 
+call `Logger.scheduleLogLevelScan` before running test cases. This is useful for quickly checking the log messages.
 
-### Using LoglevelScanner with ScalaTest
+### Using LogLevelScanner with ScalaTest
 
 To scan log level properties periodically with [ScalaTest](http://www.scalatest.org/), define the base trait as follows:
 
@@ -171,9 +171,9 @@ This code will show:
 [MyApp$] log with source code - (MyApp.scala:6)
 ```
 ### Pre-defined log formatters:
-Here is the list of pre-defined log formatters. 
- - **SourceCodeLogFormatter** (with source code location) 
- - **PlainSourceCodeLogFormatter** (with source code location without ANSI coloring) 
+Here is the list of pre-defined log formatters.
+ - **SourceCodeLogFormatter** (with source code location)
+ - **PlainSourceCodeLogFormatter** (with source code location without ANSI coloring)
  - **AppLogFormatter** (without source code location)
  - **TSVLogFormatter** (logging in TSV format)
  - **IntelliJLogFormatter** (for debugging using IntelliJ console)
@@ -204,16 +204,16 @@ import wvlet.log._
 
 // This configuration becomes unnecessary since 0.43
 //Logger.setDefaultHandler(new JSConsoleLogHandler)
-  
+
 class YourAppClass extends LogSupport {
 
   info("hello")
 }
 ```
 
-The log message will be showin in your browser's developer console.
+The log message will be shown in your browser's developer console.
 
-To configure the log level, use `wvlet.log.setDefaultLogLevel` or `wvlet.log.setLogLevel`: 
+To configure the log level, use `wvlet.log.setDefaultLogLevel` or `wvlet.log.setLogLevel`:
 ```javascript
 > wvlet.log.setDefaultLogLevel("debug")
 
@@ -237,7 +237,7 @@ log4j-jul binder:
 libraryDependencies += "org.apache.logging.log4j" % "log4j-jul" % "2.6.1",
 ```
 
-### Writing and rotating logs with files 
+### Writing and rotating logs with files
 
 To write and rotate your logs, use `LogRotationHandler`:
 ```
@@ -259,7 +259,7 @@ logger.resetHandler(new FileHandler(
 
 ### Asynchronous logging
 
-If you know your LogHandler is a heavy process (e.g., writing to network or slow disks), you can use 
+If you know your LogHandler is a heavy process (e.g., writing to network or slow disks), you can use
 `AsyncHandler` to do the logging in a background thread:
 
 ```scala
@@ -271,9 +271,9 @@ finally {
   asyncHandler.close // To flush unwritten log messages
 }
 ```
-Note that however AsyncHandler has usually higher overhead than the default handler since the asynchronous process involves locking and signal calls. 
-We recommend to use AsyncHandler only if you know the overhead of the log writing is considerably high. 
-LogRotationHandler is already optimized for writing logs to files, so you usually don't need to use AsyncHandler with LogRotationHandler. 
+Note that however AsyncHandler has usually higher overhead than the default handler since the asynchronous process involves locking and signal calls.
+We recommend to use AsyncHandler only if you know the overhead of the log writing is considerably high.
+LogRotationHandler is already optimized for writing logs to files, so you usually don't need to use AsyncHandler with LogRotationHandler.
 
 ### Clear Existing Logger Configurations
 
@@ -296,7 +296,7 @@ For example, by using [jconsole](https://docs.oracle.com/javase/8/docs/technotes
 
 ### Scala macro based logging code generation
 
-airframe-log is efficient since it generate the log message objects only when necessary. 
+airframe-log is efficient since it generate the log message objects only when necessary.
 For example, this logging code:
 ```scala
 debug(s"heavy debug log generation ${obj.toString}")
@@ -307,7 +307,7 @@ if(logger.isDebugEnabled) {
    debug(s"heavy debug log generation ${obj.toString}")
 }
 ```
-Log message String generation will not happen unless the debug log is effective. 
+Log message String generation will not happen unless the debug log is effective.
 Scala macro is also used for finding source code location (LogSource).
 
 ### To disable Logging at compile-time
@@ -318,30 +318,29 @@ Add `scalacOptions += "-Xmacro-settings:wvlet.log.disable.[SUPPRESS_BELOW]"` com
 ```
 SUPPRESS_BELOW = {`ALL` ||`ERROR` || `WARN` || `INFO` || `DEBUG`}:
 ```
-e.g. `scalacOptions += "-Xmacro-settings:wvlet.log.disable.INFO"` will suppress DEBUG, TRACE and INFO level log code generation.	
+e.g. `scalacOptions += "-Xmacro-settings:wvlet.log.disable.INFO"` will suppress DEBUG, TRACE and INFO level log code generation.
 
 Note that `ALL` is just an alias for `ERROR` which will disable all logging.
 
 ## Why it uses java.util.logging instead of slf4j?
 
-*slf4j* is just an API for logging string messages, so there is no way to configure the log levels and log format *within your program*. To use slf4j, you always need to include an slf4j 
-binding library, such as *logback-classic*. slf4j's logging configuration is binder-specific (e.g., slf4j-simple, logback-classic, etc.), 
-and your application always need to include a dependency to one of the slf4j implementations. There is nothing wrong in it if these slf4j bindings are used properly, but 
+*slf4j* is just an API for logging string messages, so there is no way to configure the log levels and log format *within your program*. To use slf4j, you always need to include an slf4j
+binding library, such as *logback-classic*. slf4j's logging configuration is binder-specific (e.g., slf4j-simple, logback-classic, etc.),
+and your application always need to include a dependency to one of the slf4j implementations. There is nothing wrong in it if these slf4j bindings are used properly, but
 third-party libraries often include slf4j bindings as dependencies, and cause unexpected logging behaviour.  
 
-`java.util.logging` is a standard API of Java and no binding library is required, but configuring `java.util.logging` was still difficult and error prone (See an example in [Stack Overflow](http://stackoverflow.com/questions/960099/how-to-set-up-java-logging-using-a-properties-file-java-util-logging)) 
+`java.util.logging` is a standard API of Java and no binding library is required, but configuring `java.util.logging` was still difficult and error prone (See an example in [Stack Overflow](http://stackoverflow.com/questions/960099/how-to-set-up-java-logging-using-a-properties-file-java-util-logging))
  *airframe-log* makes things easier for Scala developers.
 
 
 ## Related Projects
- 
-- [scala-logging](https://github.com/typesafehub/scala-logging): 
-An wrapper of *slf4j* for Scala. This also uses Scala macros to make logging efficient. No built-in source code location format, and you still need some slf4j bindings and its configuration. 
 
-- [twitter/util-logging](https://github.com/twitter/util#logging): This is also an wrapper of `java.util.logging` for Scala, but it doesn't use Scala macros, so you need to use an old sprintf style log generation, or `ifDebug(log)` 
-method to avoid expensive log message generation. 
+- [scala-logging](https://github.com/typesafehub/scala-logging):
+An wrapper of *slf4j* for Scala. This also uses Scala macros to make logging efficient. No built-in source code location format, and you still need some slf4j bindings and its configuration.
+
+- [twitter/util-logging](https://github.com/twitter/util#logging): This is also an wrapper of `java.util.logging` for Scala, but it doesn't use Scala macros, so you need to use an old sprintf style log generation, or `ifDebug(log)`
+method to avoid expensive log message generation.
 
 - [scribe](https://github.com/outr/scribe):
 A pure-scala logger implementation, which has a similar set of functionality with airframe-log (e.g., macro based code generation, programmatically configurable).
 As of June 2018, scribe doesn't support runtime log level configurations via JMX nor log.properties file.
-

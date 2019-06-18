@@ -19,7 +19,7 @@ import java.lang.reflect.Method
 import javax.management._
 import wvlet.log.LogSupport
 import wvlet.airframe.surface.reflect._
-import wvlet.airframe.surface.{MethodSurface, Parameter, ParameterBase, Surface}
+import wvlet.airframe.surface.{MethodSurface, Parameter, ParameterBase}
 
 import scala.reflect.runtime.{universe => ru}
 import wvlet.airframe.{jmx => aj}
@@ -88,7 +88,6 @@ object JMXMBean extends LogSupport {
 
     val mbeanParams = collectMBeanParameters(None, tpe)
     val attrInfo = mbeanParams.map { x =>
-      val desc = new ImmutableDescriptor()
       new MBeanAttributeInfo(
         x.name,
         x.valueType.rawType.getName,

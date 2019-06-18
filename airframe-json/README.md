@@ -15,7 +15,7 @@ libraryDependencies += "org.wvlet.airframe" %% "airframe-json" % "(version)"
 ```scala
 import wvlet.airframe.json.JSON
 
-// Returns a JSON value object of the input JSOn string 
+// Returns a JSON value object of the input JSOn string
 val jsonValue = JSON.parse("""{"id":1, "name":"leo"}""")
 ```
 
@@ -29,7 +29,7 @@ Add airframe-codec to your dependency:
 libraryDependencies += "org.wvlet.airframe" %% "airframe-codec" % "(version)"
 ```
 
-`MessageCodec` will create a JSON encoder and decorder for your objects:
+`MessageCodec` will create a JSON encoder and decoder for your objects:
 ```scala
 import wvlet.airframe.codec.MessageCodec
 
@@ -41,7 +41,7 @@ val codec = MessageCodec.of[Person]
 // Convert the object to JSON representation
 val json = codec.toJson(p) // {"id":1, "name":"leo"}
 
-// Read JSON as case class 
+// Read JSON as case class
 codec.unpackJson(json) // Some(Person(1, "leo"))
 
 ```
